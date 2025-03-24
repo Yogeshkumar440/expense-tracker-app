@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/categories")
 @AllArgsConstructor//Define the base Uri
@@ -26,6 +28,20 @@ public class CategoryController {
     public ResponseEntity<CategoryDto> getCategoryById(@PathVariable("id") Long categoryId){
         CategoryDto category = categoryService.getCategoryById(categoryId);
         return ResponseEntity.ok(category);
+    }
+
+    // Build Get All categories REST API
+    @GetMapping
+    public ResponseEntity<List<CategoryDto>> getAllCategories(){
+        List<CategoryDto> categories = categoryService.getAllCategories();
+        return ResponseEntity.ok(categories);
+    }
+
+    // Build update category REST API
+    @PutMapping("/{id}")
+    public ResponseEntity<CategoryDto> updateCategory(@PathVariable("id") Long categoryId,@RequestBody CategoryDto categoryDto){
+        CategoryDto updatedCategory = categoryService.updateCategory(categoryId, categoryDto);
+        return ResponseEntity.ok(updatedCategory);
     }
 
 }
