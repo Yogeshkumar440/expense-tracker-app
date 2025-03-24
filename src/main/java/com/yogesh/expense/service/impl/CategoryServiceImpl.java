@@ -2,6 +2,7 @@ package com.yogesh.expense.service.impl;
 
 import com.yogesh.expense.dto.CategoryDto;
 import com.yogesh.expense.entity.Category;
+import com.yogesh.expense.exceptions.ResourceNotFoundException;
 import com.yogesh.expense.mapper.CategoryMapper;
 import com.yogesh.expense.repository.CategoryRepository;
 import com.yogesh.expense.service.CategoryService;
@@ -34,7 +35,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryDto getCategoryById(Long categoryId) {
         Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new RuntimeException("Category not found with id: " + categoryId));
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + categoryId));
 
         return CategoryMapper.mapToCategoryDto(category);
     }
@@ -49,7 +50,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryDto updateCategory(Long categoryId, CategoryDto categoryDto) {
         // get category entity from the database table - categories
-        Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new RuntimeException("Category not found with id: " + categoryId));
+        Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + categoryId));
 
         // update the category entity object and save to database table
         category.setName(categoryDto.name());
@@ -62,7 +63,7 @@ public class CategoryServiceImpl implements CategoryService {
     public void deleteCategory(Long categoryId) {
         // check if a category with give id if exists in database
         Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new RuntimeException("Category not found with id: " + categoryId));
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + categoryId));
         categoryRepository.delete(category);
     }
 
