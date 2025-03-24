@@ -8,6 +8,9 @@ import com.yogesh.expense.service.ExpenseService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @AllArgsConstructor
 public class ExpenseServiceImpl implements ExpenseService {
@@ -31,5 +34,11 @@ public class ExpenseServiceImpl implements ExpenseService {
         Expense expense = expenseRepository.findById(expenseId).orElseThrow(() -> new RuntimeException("Expense not found with id: " + expenseId));
 
         return ExpenseMapper.mapToExpenseDto(expense);
+    }
+
+    @Override
+    public List<ExpenseDto> getAllExpenses() {
+        List<Expense> expenses = expenseRepository.findAll();
+        return expenses.stream().map(ExpenseMapper::mapToExpenseDto).collect(Collectors.toList());
     }
 }
