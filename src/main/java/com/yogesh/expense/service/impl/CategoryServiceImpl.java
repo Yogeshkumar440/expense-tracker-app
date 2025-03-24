@@ -58,4 +58,12 @@ public class CategoryServiceImpl implements CategoryService {
         return CategoryMapper.mapToCategoryDto(updatedCategory);
     }
 
+    @Override
+    public void deleteCategory(Long categoryId) {
+        // check if a category with give id if exists in database
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new RuntimeException("Category not found with id: " + categoryId));
+        categoryRepository.delete(category);
+    }
+
 }
