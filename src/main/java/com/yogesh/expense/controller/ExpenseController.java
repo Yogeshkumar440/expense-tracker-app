@@ -44,4 +44,11 @@ public class ExpenseController {
         ExpenseDto updatedExpense = expenseService.updateExpense(expenseId, expenseDto);
         return ResponseEntity.ok(updatedExpense);
     }
+
+    // Build delete expense REST API
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteExpense( @PathVariable("id") Long expenseId){
+        expenseService.deleteExpense(expenseId);
+        return ResponseEntity.ok("Expense deleted successfully");
+    }
 }
