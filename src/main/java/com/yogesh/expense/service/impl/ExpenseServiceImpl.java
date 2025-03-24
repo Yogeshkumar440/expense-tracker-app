@@ -1,8 +1,10 @@
 package com.yogesh.expense.service.impl;
 
 import com.yogesh.expense.dto.ExpenseDto;
+import com.yogesh.expense.entity.Category;
 import com.yogesh.expense.entity.Expense;
 import com.yogesh.expense.mapper.ExpenseMapper;
+import com.yogesh.expense.repository.CategoryRepository;
 import com.yogesh.expense.repository.ExpenseRepository;
 import com.yogesh.expense.service.ExpenseService;
 import lombok.AllArgsConstructor;
@@ -16,6 +18,7 @@ import java.util.stream.Collectors;
 public class ExpenseServiceImpl implements ExpenseService {
 
     private final ExpenseRepository expenseRepository;
+    private final CategoryRepository categoryRepository;
 
     @Override
     public ExpenseDto createExpense(ExpenseDto expenseDto) {
@@ -40,5 +43,22 @@ public class ExpenseServiceImpl implements ExpenseService {
     public List<ExpenseDto> getAllExpenses() {
         List<Expense> expenses = expenseRepository.findAll();
         return expenses.stream().map(ExpenseMapper::mapToExpenseDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public ExpenseDto updateExpense(Long expenseId, ExpenseDto expenseDto) {
+
+        Expense expense = expenseRepository.findById(expenseId).orElseThrow(() -> new RuntimeException("Expense not found with id: " + expenseId));
+
+        expense.setAmount(expenseDto.amount());
+        expense.setExpenseDate(expenseDto.expenseDate());
+        if(expenseDto.categoryDto() != null){
+            Category category = categoryRepository.findById(expenseDto.categoryDto().id())
+                    .orElseThrow(() -> new RuntimeException("Category not found with id: " + expenseDto.categoryDto().id()));
+            expense.setCategory(category);
+        }
+
+        Expense updatedExpense = expenseRepository.save(expense);
+        return ExpenseMapper.mapToExpenseDto(updatedExpense);
     }
 }

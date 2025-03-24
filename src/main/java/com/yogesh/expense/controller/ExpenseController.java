@@ -36,6 +36,12 @@ public class ExpenseController {
     public ResponseEntity<List<ExpenseDto>> getAllExpenses(){
         List<ExpenseDto> expenses = expenseService.getAllExpenses();
         return ResponseEntity.ok(expenses);
+    }
 
+    // Build update Expense REST API
+    @PutMapping("/{id}")
+    public ResponseEntity<ExpenseDto> updateExpense(@PathVariable("id") Long expenseId,@RequestBody ExpenseDto expenseDto){
+        ExpenseDto updatedExpense = expenseService.updateExpense(expenseId, expenseDto);
+        return ResponseEntity.ok(updatedExpense);
     }
 }
