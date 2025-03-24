@@ -23,4 +23,13 @@ public class ExpenseServiceImpl implements ExpenseService {
         Expense savedExpense = expenseRepository.save(expense);
         return ExpenseMapper.mapToExpenseDto(savedExpense);
     }
+
+    @Override
+    public ExpenseDto getExpenseById(Long expenseId) {
+
+        // get expense entity from the database using id
+        Expense expense = expenseRepository.findById(expenseId).orElseThrow(() -> new RuntimeException("Expense not found with id: " + expenseId));
+
+        return ExpenseMapper.mapToExpenseDto(expense);
+    }
 }

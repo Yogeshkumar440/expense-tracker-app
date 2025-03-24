@@ -5,10 +5,7 @@ import com.yogesh.expense.service.ExpenseService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/expenses")
@@ -23,6 +20,12 @@ public class ExpenseController {
         ExpenseDto expense = expenseService.createExpense(expenseDto);
 
         return new ResponseEntity<>(expense, HttpStatus.CREATED);
+    }
 
+    // Build get expense by id REST API
+    @GetMapping("/{id}")
+    public ResponseEntity<ExpenseDto> getExpenseById(@PathVariable("id") Long expenseId){
+        ExpenseDto expense = expenseService.getExpenseById(expenseId);
+        return ResponseEntity.ok(expense);
     }
 }

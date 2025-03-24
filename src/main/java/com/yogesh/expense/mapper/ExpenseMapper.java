@@ -23,7 +23,7 @@ public class ExpenseMapper {
     // Map expenseDto to expense entity
     public static Expense mapToExpense(ExpenseDto expenseDto){
         Category category = new Category();
-        category.setId(expenseDto.id());
+        category.setId(expenseDto.categoryDto().id());
 
         return new Expense(
                 expenseDto.id(),
